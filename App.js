@@ -9,7 +9,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Homescreen">
-        <Stack.Screen name="Homescreen" component={Homescreen} />
+        <Stack.Screen
+          name="Homescreen"
+          options={{ headerShown: true, animation: "slide_from_right" }}
+          component={Homescreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
