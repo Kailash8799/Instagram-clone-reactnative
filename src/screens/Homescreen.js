@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { useColorScheme } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../components/Home";
@@ -9,26 +9,41 @@ import Create from "../components/Create";
 import Reels from "../components/Reels";
 import Profile from "../components/Profile";
 import { Feather } from "@expo/vector-icons";
-import { SimpleLineIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import Ionic from "react-native-vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();
 
 const Homescreen = () => {
+  const colorScheme = useColorScheme();
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: colorScheme === "dark" ? "black" : "white",
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => {
             return focused ? (
-              <Foundation name="home" size={26} color="black" />
+              <Foundation
+                name="home"
+                size={26}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             ) : (
-              <Octicons name="home" size={22} color="black" />
+              <Octicons
+                name="home"
+                size={22}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             );
           },
         }}
@@ -40,9 +55,17 @@ const Homescreen = () => {
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => {
             return focused ? (
-              <FontAwesome name="search" size={22} color={"black"} />
+              <FontAwesome
+                name="search"
+                size={22}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             ) : (
-              <Feather name="search" size={24} color="black" />
+              <Feather
+                name="search"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             );
           },
         }}
@@ -54,9 +77,17 @@ const Homescreen = () => {
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => {
             return focused ? (
-              <Entypo name="squared-plus" size={26} color={"black"} />
+              <Entypo
+                name="squared-plus"
+                size={26}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             ) : (
-              <FontAwesome name="plus-square-o" size={26} color={"black"} />
+              <FontAwesome
+                name="plus-square-o"
+                size={26}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             );
           },
         }}
@@ -68,11 +99,15 @@ const Homescreen = () => {
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => {
             return focused ? (
-              <Ionic name="caret-forward-circle" color={"black"} size={28} />
+              <Ionic
+                name="caret-forward-circle"
+                color={colorScheme === "dark" ? "white" : "black"}
+                size={28}
+              />
             ) : (
               <Ionic
                 name="caret-forward-circle-outline"
-                color={"black"}
+                color={colorScheme === "dark" ? "white" : "black"}
                 size={28}
               />
             );
@@ -86,9 +121,17 @@ const Homescreen = () => {
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused }) => {
             return focused ? (
-              <FontAwesome name="user-circle" size={24} color="black" />
+              <FontAwesome
+                name="user-circle"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             ) : (
-              <FontAwesome name="user-circle-o" size={24} color="black" />
+              <FontAwesome
+                name="user-circle-o"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
             );
           },
         }}
