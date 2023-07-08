@@ -24,6 +24,7 @@ const Homescreen = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colorScheme === "dark" ? "black" : "white",
+          borderTopColor:colorScheme === "dark" ? "gray" : "#cbd5e1"
         },
       }}
     >
