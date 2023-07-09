@@ -17,13 +17,17 @@ import {
   PinchGestureHandler,
   State,
 } from "react-native-gesture-handler";
-import "react-native-gesture-handler"
+import "react-native-gesture-handler";
 import {} from "react-native-reanimated";
 import Modal from "react-native-modal";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 
@@ -120,7 +124,11 @@ const Onepost = ({
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity onPress={toggleModal}  activeOpacity={0.7}>
+          <TouchableOpacity
+            className="px-2"
+            onPress={toggleModal}
+            activeOpacity={0.5}
+          >
             <Entypo
               name="dots-three-vertical"
               size={22}
@@ -320,35 +328,189 @@ const Onepost = ({
           </View>
         </View>
       </View>
-        <Modal
-          style={{width:"100%",marginLeft:0,marginBottom:0}}
-          isVisible={isModalVisible}
-          hideModalContentWhileAnimating={true}
-          hasBackdrop={true}
-          backdropColor="black"
-          onSwipeCancel={() => {
-            toggleModal()
-          }}
-          backdropOpacity={0.3}
-          onTouchCancel={toggleModal}
-          swipeDirection={"down"}
-
-        >
-          <View style={{ flex: 1}}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={{
-                position: "absolute",
-                bottom: 0,
-                height: 200,
-                width:"100%",
-                backgroundColor: "red",
-              }}
-            >
-              <Text className="text-black dark:text-white">{caption}</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+      <Modal
+        style={{ width: "100%", marginLeft: 0, marginBottom: 0 }}
+        isVisible={isModalVisible}
+        hideModalContentWhileAnimating={true}
+        onSwipeCancel={() => {
+          toggleModal();
+        }}
+        backdropOpacity={0.1}
+        coverScreen={true}
+        onSwipeComplete={toggleModal}
+        swipeDirection={["down"]}
+        swipeThreshold={300}
+        animationInTiming={300}
+        animationOutTiming={300}
+        avoidKeyboard={false}
+      >
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              height: 450,
+              width: "100%",
+              backgroundColor: colorScheme === "dark" ? "#2b2a29" : "white",
+              borderRadius: 15,
+            }}
+          >
+            <View className="items-center justify-center text-center">
+              <Octicons
+                name="dash"
+                size={39}
+                color={colorScheme === "dark" ? "white" : "#2b2a29"}
+              />
+            </View>
+            <View className="flex flex-row items-center justify-around">
+              <View>
+                <View
+                  className={`items-center justify-center w-16 h-16 border-[0.7px] ${
+                    colorScheme === "dark"
+                      ? "border-slate-300"
+                      : "border-slate-800"
+                  } rounded-full`}
+                >
+                  {hasbookmark ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        sethasbookmark(!hasbookmark);
+                      }}
+                    >
+                      <FontAwesome
+                        style={{ elevation: 0.3, zIndex: 10 }}
+                        name="bookmark"
+                        size={34}
+                        color={colorScheme === "dark" ? "white" : "black"}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        sethasbookmark(!hasbookmark);
+                      }}
+                    >
+                      <FontAwesome
+                        style={{ elevation: 0.3, zIndex: 10 }}
+                        name="bookmark-o"
+                        size={34}
+                        color={colorScheme === "dark" ? "white" : "black"}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View>
+                  <Text className="text-center text-black dark:text-white">
+                    {hasbookmark ? "Saved" : "Save"}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <View
+                  className={`items-center justify-center w-16 h-16 border-[0.7px] ${
+                    colorScheme === "dark"
+                      ? "border-slate-300"
+                      : "border-slate-800"
+                  } rounded-full`}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      sethasbookmark(!hasbookmark);
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="qrcode-scan"
+                      size={30}
+                      color={colorScheme === "dark" ? "white" : "black"}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Text className="text-center text-black dark:text-white">
+                    QR code
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View className="h-[0.5px] border-[0.5px] my-3 border-slate-200 dark:border-slate-700" />
+            <View className="px-5 space-y-5">
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className="flex left-[1.5px] flex-row items-center space-x-4"
+              >
+                <Feather
+                  name="star"
+                  size={24}
+                  color={colorScheme === "dark" ? "white" : "black"}
+                />
+                <Text className="text-lg font-normal text-black dark:text-white">
+                  Add to favourites
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className="flex flex-row items-center space-x-4 left-1"
+              >
+                <Feather
+                  name="user-minus"
+                  size={24}
+                  color={colorScheme === "dark" ? "white" : "black"}
+                />
+                <Text className="text-lg font-normal text-black dark:text-white">
+                  Unfollow
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View className="h-[0.5px] border-[0.5px] my-3 border-slate-200 dark:border-slate-700" />
+            <View className="px-5 space-y-5">
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className="flex flex-row items-center space-x-4 left-1"
+              >
+                <AntDesign
+                  name="infocirlceo"
+                  size={20}
+                  color={colorScheme === "dark" ? "white" : "black"}
+                />
+                <Text className="text-lg font-normal text-black dark:text-white">
+                  Why you're seeing this post
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className="flex flex-row items-center space-x-4 left-1"
+              >
+                
+                <Ionicons name="md-eye-off-outline" size={24} color={colorScheme === "dark" ? "white" : "black"} />
+                <Text className="text-lg font-normal text-black dark:text-white">
+                  Hide
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className="flex flex-row items-center space-x-4 left-[5px]"
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={21}
+                  color={colorScheme === "dark" ? "white" : "black"}
+                />
+                <Text className="text-lg font-normal text-black dark:text-white">
+                  About this account
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                className="flex flex-row items-center space-x-4 left-[5px]"
+              >
+                <MaterialIcons name="report" size={24} color="red" />
+                <Text className="text-lg font-normal text-[#f33a3a]">Report</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };

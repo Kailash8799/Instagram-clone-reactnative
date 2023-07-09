@@ -15,10 +15,11 @@ import Ionic from "react-native-vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();
 
-const Homescreen = () => {
+const Homescreen = ({navigation}) => {
   const colorScheme = useColorScheme();
   return (
     <Tab.Navigator
+      
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
@@ -26,6 +27,7 @@ const Homescreen = () => {
           backgroundColor: colorScheme === "dark" ? "black" : "white",
           borderTopColor:colorScheme === "dark" ? "gray" : "#cbd5e1"
         },
+        tabBarHideOnKeyboard:true
       }}
     >
       <Tab.Screen
@@ -92,6 +94,7 @@ const Homescreen = () => {
             );
           },
         }}
+        
         component={Create}
       />
       <Tab.Screen
