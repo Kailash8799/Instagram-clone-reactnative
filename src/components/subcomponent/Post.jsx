@@ -8,7 +8,7 @@ const Post = () => {
       id: "asdfghfdcxvb",
       username: "kailash8799",
       userimage:
-        "https://instagram.famd1-3.fna.fbcdn.net/v/t51.2885-19/344759869_645444740930076_6013201269205349713_n.jpg?stp=dst-jpg_s320x320&_nc_ht=instagram.famd1-3.fna.fbcdn.net&_nc_cat=100&_nc_ohc=qrV138LofiAAX92A62W&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfAM-vDJ8JjaphmHCHnBzXACf8-bWiYzJF2Up8O85_kmYA&oe=64A5F5C2&_nc_sid=8b3546",
+        "https://instagram.famd15-2.fna.fbcdn.net/v/t51.2885-19/344759869_645444740930076_6013201269205349713_n.jpg?stp=dst-jpg_s320x320&_nc_ht=instagram.famd15-2.fna.fbcdn.net&_nc_cat=100&_nc_ohc=27H5STwBwBAAX_dvLYE&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfA9SoRxhKIN7S-YoxF1v1tA7ZID978NEK0gnFht2Iae3A&oe=64B9BC42&_nc_sid=8b3546",
       postlink:
         "https://images.unsplash.com/photo-1493612276216-ee3925520721?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
       caption: "Hey buddy how are you and fine jo bhi hoga vo bhi dekha jayega",

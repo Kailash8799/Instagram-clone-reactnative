@@ -4,6 +4,7 @@ import Homescreen from "./src/screens/Homescreen";
 import { StatusBar } from "react-native";
 const Stack = createNativeStackNavigator();
 import { useColorScheme } from "react-native";
+import CameraScreen from "./src/screens/CameraScreen";
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -20,6 +21,11 @@ export default function App() {
           name="Homescreen"
           options={{ headerShown: false, animation: "slide_from_right" }}
           component={Homescreen}
+        />
+        <Stack.Screen
+          name="Camerascreen"
+          options={{ headerShown: false, animation: "slide_from_right" }}
+          component={CameraScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
