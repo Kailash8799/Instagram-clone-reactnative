@@ -72,6 +72,7 @@ const Mementions = () => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ flexGrow: 1 }}
       nestedScrollEnabled={true}
+      className="bg-white dark:bg-black"
     >
       <View className="grid flex-row flex-wrap grid-cols-3">
         {(myposts).map((obj, key) => {
