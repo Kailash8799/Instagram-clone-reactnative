@@ -6,7 +6,7 @@ import {
   Image,
   useColorScheme,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Video, ResizeMode } from "expo-av";
@@ -29,7 +29,8 @@ const OneReels = ({
   song,
   mensition,
   totallikes,
-  totalcomment
+  totalcomment,
+  navigation
 }) => {
   
   const colorScheme = useColorScheme();
@@ -38,7 +39,12 @@ const OneReels = ({
   const [isMuted, setIsMuted] = React.useState(false);
   const [hasLiked, sethasLiked] = useState(false);
   const [hasbookmark, sethasbookmark] = useState(false);
-
+  useEffect(() => {
+    return () => {
+      video.current.pauseAsync();
+    }
+  }, [navigation])
+  
   return (
     <View style={{ position: "relative", height: height - 87, width: width }}>
       <TouchableOpacity

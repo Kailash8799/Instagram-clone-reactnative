@@ -12,7 +12,6 @@ import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Video, ResizeMode } from "expo-av";
 import OneReels from "./subcomponent/OneReels";
-import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 let width = Dimensions.get("screen").width;
 let height = Dimensions.get("screen").height;
