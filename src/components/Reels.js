@@ -8,15 +8,17 @@ import {
   FlatList,
 } from "react-native";
 import { StyleSheet, Button } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Video, ResizeMode } from "expo-av";
 import OneReels from "./subcomponent/OneReels";
+import { BackHandler } from "react-native";
 
 let width = Dimensions.get("screen").width;
 let height = Dimensions.get("screen").height;
 
-const Reels = () => {
+const Reels = ({navigation}) => {
+  
   const colorScheme = useColorScheme();
   const totalreels = [
     {

@@ -1,5 +1,5 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, RefreshControl, Share } from "react-native";
+import React, { useEffect } from "react";
 import ProfileHeader from "./subcomponent/Profile/ProfileHeader";
 import { ScrollView } from "react-native";
 import ProfileImage from "./subcomponent/Profile/ProfileImage";
@@ -12,15 +12,49 @@ import Mementions from "./subcomponent/Mementions";
 import { useColorScheme } from "react-native";
 import Ionic from "react-native-vector-icons/Ionicons";
 import MyVidoes from "./subcomponent/MyVideos";
+import { BackHandler } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 
-const Profile = () => {
+const Profile = ({navigation}) => {
+  
   const colorScheme = useColorScheme();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  }
+
   return (
     <View className="bg-white dark:bg-black">
       <ProfileHeader />
       <ScrollView
+        refreshControl={
+            <RefreshControl  refreshing={refreshing}  onRefresh={onRefresh} />
+          }
         contentContainerStyle={{ flexGrow: 1}}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
@@ -28,7 +62,7 @@ const Profile = () => {
         <View className="bg-white dark:bg-black">
           <ProfileImage />
           <ProfileBio />
-          <EditProfile />
+          <EditProfile onShare={onShare}/>
           <Storyhighlites />
         </View>
         <Tab.Navigator

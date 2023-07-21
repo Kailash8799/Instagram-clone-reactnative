@@ -39,12 +39,15 @@ const OneReels = ({
   const [isMuted, setIsMuted] = React.useState(false);
   const [hasLiked, sethasLiked] = useState(false);
   const [hasbookmark, sethasbookmark] = useState(false);
+  const [reelvisible,setreelvisible] = useState(false)
   useEffect(() => {
+    setreelvisible(true)
     return () => {
       video.current.pauseAsync();
+      setreelvisible(false)
     }
   }, [navigation])
-  
+  if(!reelvisible)return;
   return (
     <View style={{ position: "relative", height: height - 87, width: width }}>
       <TouchableOpacity

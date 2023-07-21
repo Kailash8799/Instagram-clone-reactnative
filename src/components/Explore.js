@@ -1,5 +1,5 @@
-import { View, Text, FlatList, ScrollView, Dimensions } from "react-native";
-import React from "react";
+import { View, Text, FlatList, ScrollView, Dimensions, RefreshControl } from "react-native";
+import React, { useEffect } from "react";
 import ExplorePost from "./subcomponent/ExplorePost";
 import SearchBox from "./subcomponent/SearchBox";
 import ExplorePost2 from "./subcomponent/ExplorePost2";
@@ -8,7 +8,17 @@ import ExplorePost1 from "./subcomponent/ExplorePost1";
 let width = Dimensions.get("screen").width;
 let height = Dimensions.get("screen").height;
 
-const Explore = () => {
+const Explore = ({navigation}) => {
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   const posts = [
     {
       id: 0,
@@ -266,7 +276,11 @@ const Explore = () => {
 
   return (
     <>
-      <ScrollView className="bg-white dark:bg-black">
+      <ScrollView 
+       refreshControl={
+            <RefreshControl refreshing={refreshing}  onRefresh={onRefresh} />
+          }
+       className="bg-white dark:bg-black">
         <SearchBox />
         {posts.map((item, key) => {
           return (

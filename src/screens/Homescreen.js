@@ -19,7 +19,7 @@ const Homescreen = ({navigation}) => {
   const colorScheme = useColorScheme();
   return (
     <Tab.Navigator
-      
+      backBehavior="history"
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
