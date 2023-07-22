@@ -31,7 +31,14 @@ const { height, width } = Dimensions.get("screen");
 
 export default function PostImage({ navigation }) {
   const colorScheme = useColorScheme();
-  const { uploadImage, setuploadImage } = useContext(ImagePickerContext);
+  const {
+    uploadImage,
+    setuploadImage,
+    imageUploading,
+    setimageUploading,
+    imageUploadProgress,
+    setimageUploadProgress,
+  } = useContext(ImagePickerContext);
   const [mediapermission, setmediapermission] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [percentage, setpercentage] = useState(0);
@@ -70,14 +77,12 @@ export default function PostImage({ navigation }) {
   }
   const uploadImageindatabase = async (e) => {
     try {
-      e.preventDefault();
       const responce = await fetch(uploadImage);
       const blob = await responce.blob();
       const posti = await addDoc(collection(db, "posts"), {
         filename: "kailash",
         timestamp: serverTimestamp(),
       });
-
       const upbr = uploadBytesResumable(
         ref(storage, `images/${posti.id}/posts`),
         blob
@@ -87,10 +92,13 @@ export default function PostImage({ navigation }) {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setpercentage(progress);
+          setimageUploading(true);
+          setimageUploadProgress(progress);
         },
         (error) => {
           console.log(error);
+          setimageUploading(false);
+          setimageUploadProgress(0);
         },
         () => {
           getDownloadURL(upbr.snapshot.ref).then((du) => {
@@ -98,7 +106,8 @@ export default function PostImage({ navigation }) {
               url: du,
             });
           });
-          navigation.navigate("Home");
+          setimageUploading(false);
+          setimageUploadProgress(0);
         }
       );
     } catch (error) {
@@ -186,6 +195,7 @@ export default function PostImage({ navigation }) {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => {
+                uploadImageindatabase();
                 navigation.navigate("Home");
               }}
               className="items-center py-3 mx-6 rounded-lg dark:bg-zinc-700 bg-zinc-500/20"

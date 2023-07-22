@@ -1,4 +1,4 @@
-import { View, Text, RefreshControl, Share } from "react-native";
+import { View, Text, RefreshControl, Share, Alert } from "react-native";
 import React, { useEffect } from "react";
 import ProfileHeader from "./subcomponent/Profile/ProfileHeader";
 import { ScrollView } from "react-native";
@@ -12,7 +12,6 @@ import Mementions from "./subcomponent/Mementions";
 import { useColorScheme } from "react-native";
 import Ionic from "react-native-vector-icons/Ionicons";
 import MyVidoes from "./subcomponent/MyVideos";
-import { BackHandler } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 
