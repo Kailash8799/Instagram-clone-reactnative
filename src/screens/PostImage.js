@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   Button,
   Image,
@@ -19,6 +19,8 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { BackHandler } from "react-native";
 import { ImagePickerContext } from "../components/contexts/ImageUpload";
@@ -28,6 +30,67 @@ import { TouchableOpacity } from "react-native";
 import { TextInput } from "react-native";
 
 const { height, width } = Dimensions.get("screen");
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+// Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
+async function sendPushNotification(expoPushToken) {
+  const message = {
+    to: expoPushToken,
+    sound: "default",
+    title: "Instagram",
+    body: "Your image uploaded",
+    data: { someData: "goes here" },
+  };
+
+  await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(message),
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
+}
 
 export default function PostImage({ navigation }) {
   const colorScheme = useColorScheme();
@@ -42,6 +105,26 @@ export default function PostImage({ navigation }) {
   const [mediapermission, setmediapermission] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [percentage, setpercentage] = useState(0);
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -100,12 +183,13 @@ export default function PostImage({ navigation }) {
           setimageUploading(false);
           setimageUploadProgress(0);
         },
-        () => {
+        async() => {
           getDownloadURL(upbr.snapshot.ref).then((du) => {
             updateDoc(doc(db, "posts", posti.id), {
               url: du,
             });
           });
+          await sendPushNotification(expoPushToken);
           setimageUploading(false);
           setimageUploadProgress(0);
         }
@@ -196,7 +280,7 @@ export default function PostImage({ navigation }) {
               activeOpacity={0.7}
               onPress={() => {
                 uploadImageindatabase();
-                navigation.navigate("Home");
+                navigation.navigate("Homescreen");
               }}
               className="items-center py-3 mx-6 rounded-lg dark:bg-zinc-700 bg-zinc-500/20"
             >
