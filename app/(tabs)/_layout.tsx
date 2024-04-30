@@ -1,19 +1,9 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
-
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import React from "react";
+import { Octicons, Ionicons, Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import Colors from "@/constants/Colors";
+import { useColorScheme } from "@/components/useColorScheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -21,37 +11,114 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        headerShown: false,
+        tabBarStyle: {
+          paddingTop: 5,
+          backgroundColor: colorScheme === "dark" ? "black" : "white",
+          borderTopWidth: 0.2,
+          height: 60,
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="(home)/index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          title: "",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Octicons
+                name="home"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
+            ) : (
+              <Octicons
+                name="home"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
+            ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="search/index"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <FontAwesome
+                name="search"
+                size={23}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
+            ) : (
+              <Feather
+                name="search"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="create/page"
+        options={{
+          title: "",
+          tabBarIcon: ({ }) => (
+            <FontAwesome
+              name="plus-square-o"
+              size={24}
+              color={colorScheme === "dark" ? "white" : "black"}
+            />
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("create/index");
+          },
+        })}
+      />
+      <Tabs.Screen
+        name="reel/index"
+        options={{
+          title: "",
+          tabBarIcon: ({ focused }) => {
+            return focused ? (
+              <Ionicons
+                name="caret-forward-circle"
+                color={colorScheme === "dark" ? "white" : "black"}
+                size={28}
+              />
+            ) : (
+              <Ionicons
+                name="caret-forward-circle-outline"
+                color={colorScheme === "dark" ? "white" : "black"}
+                size={28}
+              />
+            );
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="profile/index"
+        options={{
+          title: "",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <FontAwesome
+                name="user-circle"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
+            ) : (
+              <FontAwesome
+                name="user-circle-o"
+                size={24}
+                color={colorScheme === "dark" ? "white" : "black"}
+              />
+            ),
         }}
       />
     </Tabs>
