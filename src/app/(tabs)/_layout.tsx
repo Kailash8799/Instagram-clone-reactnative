@@ -2,8 +2,8 @@ import React from "react";
 import { Octicons, Ionicons, Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
+import Colors from "@/src/constants/Colors";
+import { useColorScheme } from "@/src/hooks/useColorScheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
