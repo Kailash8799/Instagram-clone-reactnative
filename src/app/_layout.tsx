@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
+import { StatusBar } from 'react-native';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -48,6 +49,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <StatusBar barStyle={colorScheme === "dark" ? 'light-content' : 'dark-content'} animated={true} networkActivityIndicatorVisible={true} showHideTransition={'slide'} translucent={true} backgroundColor={colorScheme === "dark" ? '#000' : '#fff'} />
       <Stack screenOptions={{ animation: 'ios' }} >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="create/index" options={{ headerShown: false }} />
