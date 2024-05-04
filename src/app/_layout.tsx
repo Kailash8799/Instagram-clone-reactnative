@@ -1,11 +1,12 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { StatusBar } from 'react-native';
+import { DarkTheme, DefaultTheme } from '@/src/utils/theme/theme';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,10 +50,11 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <StatusBar barStyle={colorScheme === "dark" ? 'light-content' : 'dark-content'} animated={true} networkActivityIndicatorVisible={true} showHideTransition={'slide'} translucent={true} backgroundColor={colorScheme === "dark" ? '#000' : '#fff'} />
+      <StatusBar barStyle={colorScheme === "dark" ? 'light-content' : 'dark-content'} animated={true} networkActivityIndicatorVisible={true} showHideTransition={'slide'} translucent={false} backgroundColor={colorScheme === "dark" ? '#000' : 'white'} />
       <Stack screenOptions={{ animation: 'ios' }} >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="create/index" options={{ headerShown: false }} />
+        <Stack.Screen name="storyview" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

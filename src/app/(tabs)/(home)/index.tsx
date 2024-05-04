@@ -1,9 +1,17 @@
-import { ScrollView, StatusBar, StyleSheet } from 'react-native';
+import { Dimensions, FlatList, ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HomeScreenHeader from '@/src/components/homescreen/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useSharedValue, interpolate, Extrapolation, useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
-import { Text, View } from '@/src/components/Themed';
+import { View } from '@/src/components/Themed';
 import { useRef } from 'react';
+import StorySection from '@/src/components/story';
+import Post from '@/src/components/post/Post';
+
+const { width } = Dimensions.get("screen");
+
+const PostSeperator = () => {
+  return <View style={{ height: 10, width }} />
+}
 
 export default function HomeTab() {
   const scrollY = useSharedValue(0);
@@ -23,33 +31,30 @@ export default function HomeTab() {
       >
         <HomeScreenHeader />
       </Animated.View>
-      <ScrollView onScroll={(e) => {
-        const y = e?.nativeEvent?.contentOffset?.y;
-        const scrollingDown = y > scrollYRef?.current;
 
-        if (scrollingDown && y > 50) {
-          scrollY.value = withTiming(y);
-        } else if (!scrollingDown) {
-          scrollY.value = withTiming(0);
-        }
+      <FlatList
+        data={Array.from(Array(3).keys())}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={PostSeperator}
+        automaticallyAdjustsScrollIndicatorInsets={true}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ index }) => {
+          return <Post key={index} />
+        }}
+        ListHeaderComponent={() => <>
+          <View style={{ height: 45, width: "100%" }} /><StorySection /></>}
+        onScroll={(e) => {
+          const y = e?.nativeEvent?.contentOffset?.y;
+          const scrollingDown = y > scrollYRef?.current;
 
-        scrollYRef.current = y;
-      }}>
-        <View style={{ height: 45, width: "100%" }} />
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-        <View style={{ height: 100 }}><Text style={{ color: 'red' }} >Hey</Text></View>
-      </ScrollView>
+          if (scrollingDown && y > 50) {
+            scrollY.value = withTiming(y);
+          } else if (!scrollingDown) {
+            scrollY.value = withTiming(0);
+          }
+          scrollYRef.current = y;
+        }}
+      />
     </SafeAreaView>
   );
 }

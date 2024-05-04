@@ -6,28 +6,18 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 const HomeScreenHeader = () => {
     const { commonTheme } = useThemeConstant();
     const colorScheme = useColorScheme();
+    const color = colorScheme === "dark" ? "black" : "white"
     return (
         <View
-            style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                left: 0,
-                height: 45,
-                flexDirection: "row",
-                backgroundColor: 'black',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingHorizontal: 10,
-            }}
+            style={[styles.container, { backgroundColor: color }]}
         >
             <View>
-                <Text style={[{ fontSize: 25 }, commonTheme]} >
+                <Text style={[styles.font, commonTheme]} >
                     Instagram
                 </Text>
             </View>
-            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }} >
-                <TouchableOpacity style={{ marginRight: 15 }} activeOpacity={0.6}>
+            <View style={[styles.icon]} >
+                <TouchableOpacity style={[styles.margin]} activeOpacity={0.6}>
                     <Feather
                         name="heart"
                         size={26}
@@ -50,7 +40,20 @@ export default HomeScreenHeader
 
 const styles = StyleSheet.create({
     container: {
-        height: 50,
-        backgroundColor: 'red'
+        position: "absolute",
+        top: 0,
+        right: 0,
+        left: 0,
+        height: 45,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        zIndex: 100,
     },
+    icon: { display: 'flex', flexDirection: 'row', alignItems: 'center' },
+    font: {
+        fontSize: 25,
+    },
+    margin: { marginRight: 15 }
 })

@@ -13,6 +13,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           paddingTop: 5,
           backgroundColor: colorScheme === "dark" ? "black" : "white",
