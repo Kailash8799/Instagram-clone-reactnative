@@ -1,7 +1,6 @@
 import {
     Dimensions,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     View,
     useColorScheme,
@@ -75,17 +74,12 @@ const PostFooter = () => {
                             transition={1000}
                         />
                     </View>
-                    <View>
-                        <TextInput
-                            style={styles.commentbox}
-                            placeholderTextColor={colorScheme === "dark" ? "gray" : "black"}
-                            placeholder="Add a comment..."
-                        />
-                    </View>
+                    <TouchableOpacity activeOpacity={0.7}>
+                        <Text numberOfLines={1}
+                            style={[styles.commentbox, { color: colorScheme === "dark" ? "gray" : "black" }]}
+                        >Add a comment...</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                    <Text style={{ color: 'red' }} >Post</Text>
-                </TouchableOpacity>
             </View>
             <View style={styles.spacer} />
         </View>
@@ -108,6 +102,7 @@ const styles = StyleSheet.create({
         flex: 1,
         display: "flex",
         flexDirection: "row",
+        textAlignVertical: 'center',
     },
     paddingcommentbox: {
         paddingHorizontal: 13,
