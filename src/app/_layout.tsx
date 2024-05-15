@@ -1,24 +1,20 @@
+import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { StatusBar } from "react-native";
 import { DarkTheme, DefaultTheme } from "@/src/utils/theme/theme";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import Constants from "expo-constants";
+import { tokenCache } from "@/src/utils/clerk";
 
 export {
-  // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -41,12 +37,35 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-
-  return <RootLayoutNav />;
+  return (
+    <ClerkProvider
+      signInFallbackRedirectUrl={"/home"}
+      signInForceRedirectUrl={"/home"}
+      allowedRedirectOrigins={["/home", "/login"]}
+      tokenCache={tokenCache}
+      publishableKey={Constants!.expoConfig!.extra!.clerkPublishableKey}
+    >
+      <RootLayoutNav />
+    </ClerkProvider>
+  );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const { isLoaded, isSignedIn } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    const inTabsGroup = segments[0] === "(auth)";
+    console.log(segments);
+    if (isSignedIn && !inTabsGroup) {
+      router.replace("/home/");
+    } else if (!isSignedIn) {
+      router.replace("/login");
+    }
+  }, [isSignedIn]);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -58,15 +77,7 @@ function RootLayoutNav() {
         translucent={false}
         backgroundColor={colorScheme === "dark" ? "#000" : "white"}
       />
-      <Stack screenOptions={{ animation: "ios" }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="create/index" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="create/upload/index"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="storyview" options={{ headerShown: false }} />
-      </Stack>
+      <Slot />
     </ThemeProvider>
   );
 }

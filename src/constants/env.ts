@@ -1,0 +1,5 @@
+const ENV_VAR = {
+    EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY
+};
+
+export { ENV_VAR };

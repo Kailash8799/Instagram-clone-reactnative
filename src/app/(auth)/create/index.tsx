@@ -10,7 +10,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { useThemeConstant } from "@/src/hooks/useThemeConstant";
-import { useRouter } from "expo-router";
+import { useRouter } from "expo-router"; 
 import { Image } from "expo-image";
 import { blurhash } from "@/src/constants/constant";
 import AllImages from "@/src/components/create/AllImages";
@@ -35,7 +35,7 @@ const Create = () => {
     }
   }, []);
   const goNext = useCallback(() => {
-    router.navigate("/create/upload/");
+    router.push("/create/upload/");
   }, []);
 
   return (

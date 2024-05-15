@@ -1,9 +1,9 @@
 import React from "react";
 import { Octicons, Ionicons, Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
 import Colors from "@/src/constants/Colors";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
+import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -23,7 +23,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="(home)/index"
+        name="home/index"
         options={{
           title: "",
           tabBarIcon: ({ focused }) =>
@@ -66,7 +66,7 @@ export default function TabLayout() {
         name="create/page"
         options={{
           title: "",
-          tabBarIcon: ({ }) => (
+          tabBarIcon: ({}) => (
             <FontAwesome
               name="plus-square-o"
               size={24}
@@ -77,7 +77,7 @@ export default function TabLayout() {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("create/index");
+            navigation.push("create/index");
           },
         })}
       />
