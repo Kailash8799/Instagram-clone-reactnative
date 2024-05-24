@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, FlatList, useColorScheme } from 'react-native'
 import React from 'react'
+import { View, Text, StyleSheet, FlatList, useColorScheme } from 'react-native'
 import OneStory from './OneStory'
 
 const StorySeperator = () => {

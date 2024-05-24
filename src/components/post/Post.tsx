@@ -1,5 +1,5 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import { Image } from 'expo-image';
 import PostHeader from './PostHeader'
 import PostFooter from './PostFooter'

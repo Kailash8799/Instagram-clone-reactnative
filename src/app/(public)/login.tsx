@@ -1,166 +1,255 @@
-// import Colors from "@/constants/Colors";
-import React from "react";
-import { useOAuth } from "@clerk/clerk-expo";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
-  View,
-  StyleSheet,
-  TextInput,
   Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  StatusBar,
   TouchableOpacity,
 } from "react-native";
-import {SafeAreaView} from 'react-native-safe-area-context'
-import { useWarmUpBrowser } from "@/src/hooks/useWarmUpBrowser";
-import { defaultStyles } from "@/src/constants/Styles";
-import Colors from "@/src/constants/Colors";
+import { tokenCache } from "@/src/utils/token";
+import { Toast } from "@/src/utils/toast";
+import { AuthService } from "@/src/services/api/authService";
+import Input from "@/src/components/global/Input";
+import CustomButton from "@/src/components/global/CustomButton";
+import { LoginFormType } from "@/src/types/auth";
+import { useAuth } from "@/src/services/state/auth";
+import { useRouter } from "expo-router";
+import Icon from "@expo/vector-icons/AntDesign";
 
-enum Strategy {
-  Google = "oauth_google",
-  Apple = "oauth_apple",
-  Facebook = "oauth_facebook",
-}
-const Page = () => {
-  useWarmUpBrowser();
-
+const Login = () => {
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [isSecured, setisSecured] = useState(true);
+  const { isLoading, setIsLoading, setIsSignIn } = useAuth();
   const router = useRouter();
-  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
-  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
-  const { startOAuthFlow: facebookAuth } = useOAuth({
-    strategy: "oauth_facebook",
-  });
 
-  const onSelectAuth = async (strategy: Strategy) => {
-    const selectedAuth = {
-      [Strategy.Google]: googleAuth,
-      [Strategy.Apple]: appleAuth,
-      [Strategy.Facebook]: facebookAuth,
-    }[strategy];
-
-    try {
-      const { createdSessionId, setActive } = await selectedAuth();
-      console.log(createdSessionId)
-      if (createdSessionId) {
-        setActive!({ session: createdSessionId });
-        // router.dismissAll();
-        // return <Redirect href="/(tabs)/(home)/" />;
-      }
-      // router.push("/home/")
-    } catch (err) {
-      console.error("OAuth error", err);
-    }
+  const onemailChange = (val: any) => {
+    setemail(val);
+  };
+  const onpassChange = (val: any) => {
+    setpassword(val);
   };
 
+  const pushToRegister = () => {
+    router.push("/(public)/signup");
+  };
+  const pushToForgot = () => {
+    router.push("forgot");
+  };
+
+  const loginUser = useCallback(async (data: LoginFormType) => {
+    setIsLoading(true);
+    try {
+      setIsSignIn(true);
+      return;
+      const res = await AuthService.login(data);
+      if (res?.Success) {
+        setemail("");
+        setpassword("");
+        await tokenCache.saveToken("logintoken", res?.Data?.token);
+        setIsSignIn(true);
+      } else {
+        Toast.render(res?.Message ?? "Some error occurred!");
+      }
+    } catch (error) {
+      Toast.render("Some error occurred. Try again");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const pushToHome = useCallback(async () => {
+    if (isLoading) return;
+    try {
+      if (email.length === 0 || password.length === 0) {
+        Toast.render("All field are mandatory");
+        return;
+      }
+      if (email.length < 4 || password.length < 4) {
+        Toast.render(
+          "Email and Password length should be more than 4 character"
+        );
+        return;
+      }
+      const data: LoginFormType = {
+        UserName: email,
+        Password: password,
+      };
+      loginUser(data);
+    } catch (error) {
+      Toast.render("Some error occurred. Try again");
+    }
+  }, [email, password]);
+
+  const iconToggle = useCallback(() => {
+    setisSecured(!isSecured);
+  }, [isSecured]);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        autoCapitalize="none"
-        placeholder="Email"
-        style={[defaultStyles.inputField, { marginBottom: 30 }]}
-      />
-
-      <TouchableOpacity style={defaultStyles.btn}>
-        <Text style={defaultStyles.btnText}>Continue</Text>
-      </TouchableOpacity>
-
-      <View style={styles.seperatorView}>
-        <View
-          style={{
-            flex: 1,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        />
-        <Text style={styles.seperator}>or</Text>
-        <View
-          style={{
-            flex: 1,
-            borderBottomColor: "black",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
+    <ScrollView style={styles.container}>
+      <StatusBar />
+      <View style={styles.statusbar} />
+      <View>
+        <Text style={[styles.heading1]}>Login to your account.</Text>
+        <Text style={[styles.heading2]}>Please sign in to your account</Text>
+      </View>
+      <View>
+        <Text style={styles.label}>Email Address</Text>
+        <Input
+          isVisible={false}
+          secureTextEntry={false}
+          value={email}
+          onChange={onemailChange}
+          placeholder="Enter email"
         />
       </View>
-
-      <View style={{ gap: 20 }}>
-        <TouchableOpacity style={styles.btnOutline}>
-          <Ionicons
-            name="mail-outline"
-            size={24}
-            style={defaultStyles.btnIcon}
-          />
-          <Text style={styles.btnOutlineText}>Continue with Phone</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.btnOutline}
-          onPress={() => onSelectAuth(Strategy.Apple)}
-        >
-          <Ionicons name="logo-apple" size={24} style={defaultStyles.btnIcon} />
-          <Text style={styles.btnOutlineText}>Continue with Apple</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.btnOutline}
-          onPress={() => onSelectAuth(Strategy.Google)}
-        >
-          <Ionicons
-            name="logo-google"
-            size={24}
-            style={defaultStyles.btnIcon}
-          />
-          <Text style={styles.btnOutlineText}>Continue with Google</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.btnOutline}
-          onPress={() => onSelectAuth(Strategy.Facebook)}
-        >
-          <Ionicons
-            name="logo-facebook"
-            size={24}
-            style={defaultStyles.btnIcon}
-          />
-          <Text style={styles.btnOutlineText}>Continue with Facebook</Text>
+      <View>
+        <Text style={styles.label}>Password</Text>
+        <Input
+          isVisible={true}
+          secureTextEntry={isSecured}
+          onToggle={iconToggle}
+          iconvalue={isSecured}
+          value={password}
+          onChange={onpassChange}
+          placeholder="Password"
+        />
+      </View>
+      <View style={styles.forgotview}>
+        <TouchableOpacity onPress={pushToForgot}>
+          <Text style={styles.forgot}>Forgot Password ?</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      <View style={styles.spacer} />
+      <View>
+        <CustomButton
+          loading={isLoading}
+          title="Sign in"
+          onClick={pushToHome}
+          borderRadius={100}
+        />
+      </View>
+      <View style={styles.account}>
+        <View style={styles.line} />
+        <View>
+          <Text style={styles.heading3}>Or sign in with</Text>
+        </View>
+        <View style={styles.line} />
+      </View>
+      <View style={styles.circleparent}>
+        <View style={styles.circle}>
+          <TouchableOpacity
+            // onPress={signInWithGoogle}
+            style={styles.centerbutton}
+          >
+            <Icon name="google" size={30} color={"red"} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.account}>
+        <Text style={styles.heading3}>Don't have an account?</Text>
+        <TouchableOpacity onPress={pushToRegister}>
+          <Text style={styles.forgot}>Register</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.spacer} />
+    </ScrollView>
   );
 };
 
-export default Page;
+export default Login;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 26,
-  },
-
-  seperatorView: {
+  circleparent: {
+    display: "flex",
     flexDirection: "row",
-    gap: 10,
+    justifyContent: "center",
     alignItems: "center",
-    marginVertical: 30,
+    marginVertical: 10,
   },
-  seperator: {
-    // fontFamily: "mon-sb",
-    color: Colors.grey,
-    fontSize: 16,
-  },
-  btnOutline: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: Colors.grey,
+  circle: {
     height: 50,
-    borderRadius: 8,
+    width: 50,
+    borderColor: "rgba(88,88,88,0.1)",
+    borderWidth: 2,
+    borderRadius: 100,
+    display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
-    paddingHorizontal: 10,
   },
-  btnOutlineText: {
-    color: "#000",
-    fontSize: 16,
-    // fontFamily: "mon-sb",
+  centerbutton: {
+    height: 45,
+    width: 45,
+    backgroundColor: "#fff",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+  },
+  line: {
+    height: 1,
+    borderRadius: 100,
+    width: 150,
+    backgroundColor: "rgba(88,88,88,0.2)",
+  },
+  space: { width: 5 },
+  heading3: {
+    color: "grey",
+    fontSize: 15,
+    marginHorizontal: 5,
+    fontWeight: "500",
+  },
+  spacer: {
+    height: 35,
+  },
+  forgotview: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 10,
+  },
+  account: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+    alignItems: "center",
+  },
+  forgot: {
+    color: "rgba(255,159,11,1)",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  label: {
+    color: "black",
+    marginTop: 30,
+    marginBottom: 5,
+    fontSize: 17,
+    fontWeight: "600",
+  },
+  heading1: {
+    color: "black",
+    fontSize: 35,
+    fontWeight: "900",
+  },
+  heading2: {
+    color: "grey",
+    fontSize: 18,
+    marginTop: 10,
+    fontWeight: "500",
+  },
+  statusbar: {
+    height: StatusBar.currentHeight,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: "#fff",
   },
 });

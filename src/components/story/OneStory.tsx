@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View, useColorScheme } from 'react-native'
 import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, useColorScheme } from 'react-native'
 import { useRouter } from 'expo-router'
 import { LinearGradient } from "expo-linear-gradient";
 

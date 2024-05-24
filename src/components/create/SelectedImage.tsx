@@ -1,10 +1,11 @@
+import React from "react";
 import { blurhash } from "@/src/constants/constant";
 import { UploadImageType } from "@/src/utils/theme/types";
 import { memo, useCallback } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { Text } from "../Themed";
 import { Image } from "expo-image";
-import { useUploadImageStore } from "@/src/state/store/uploadImage";
+import { useUploadImageStore } from "@/src/services/state/uploadImage";
 
 const { width } = Dimensions.get("screen");
 const IMAGE_WIDTH = width / 3.3;

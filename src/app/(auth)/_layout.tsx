@@ -4,18 +4,16 @@ import {
   useRouter,
   useSegments,
 } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth } from "@/src/services/state/auth";
 
 export default function ProtectedRootLayout() {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoaded) return;
     const inTabsGroup = segments[0] === "(auth)";
     if (!isSignedIn && inTabsGroup) {
-      console.log("Hey i am here ");
       router.replace("/login")
     }
   }, [isSignedIn]);

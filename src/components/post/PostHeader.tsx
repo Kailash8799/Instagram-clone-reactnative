@@ -1,5 +1,5 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from 'react-native'
 import React from 'react'
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from 'react-native'
 import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 const { width } = Dimensions.get("screen");

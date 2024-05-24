@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -5,7 +6,6 @@ import {
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
-import React from "react";
 import { useThemeConstant } from "@/src/hooks/useThemeConstant";
 import { AntDesign, Feather } from "@expo/vector-icons";
 

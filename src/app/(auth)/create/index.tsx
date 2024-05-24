@@ -1,3 +1,4 @@
+import React, { useCallback, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +7,6 @@ import {
   Dimensions,
   useColorScheme,
 } from "react-native";
-import React, { useCallback, useMemo, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { useThemeConstant } from "@/src/hooks/useThemeConstant";
@@ -14,13 +14,13 @@ import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { blurhash } from "@/src/constants/constant";
 import AllImages from "@/src/components/create/AllImages";
-import { useUploadImageStore } from "@/src/state/store/uploadImage";
+import { useUploadImageStore } from "@/src/services/state/uploadImage";
 
 const { width } = Dimensions.get("screen");
 
 const Create = () => {
   const { commonTheme } = useThemeConstant();
-  const { image: uploadimage, addUploadImage } = useUploadImageStore();
+  const { image: uploadimage } = useUploadImageStore();
   const router = useRouter();
   const colorScheme = useColorScheme();
 

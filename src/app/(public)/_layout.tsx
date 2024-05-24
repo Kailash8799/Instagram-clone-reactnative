@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { Stack, useRouter, useSegments } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth } from "@/src/services/state/auth";
 
 export default function PublicRootLayout() {
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoaded) return;
     const inTabsGroup = segments[0] === "(public)";
     if (isSignedIn && inTabsGroup) {
       router.replace("/home/");
@@ -25,6 +24,21 @@ export default function PublicRootLayout() {
       <Stack.Screen
         redirect={isSignedIn}
         name="signup"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        redirect={isSignedIn}
+        name="forgot"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        redirect={isSignedIn}
+        name="otpverification"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        redirect={isSignedIn}
+        name="resetpassword"
         options={{ headerShown: false }}
       />
     </Stack>

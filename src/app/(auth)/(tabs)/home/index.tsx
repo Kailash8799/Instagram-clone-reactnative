@@ -1,3 +1,4 @@
+import React from 'react'
 import { Dimensions, FlatList, ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HomeScreenHeader from '@/src/components/homescreen/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';

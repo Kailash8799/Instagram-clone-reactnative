@@ -15,6 +15,13 @@ const tokenCache = {
             return;
         }
     },
+    async removeToken(key: string, ) {
+        try {
+            return SecureStore.deleteItemAsync(key);
+        } catch (err) {
+            return;
+        }
+    },
 };
 
 export { tokenCache }

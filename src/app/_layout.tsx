@@ -8,13 +8,9 @@ import { useEffect } from "react";
 import { useColorScheme } from "@/src/hooks/useColorScheme";
 import { StatusBar } from "react-native";
 import { DarkTheme, DefaultTheme } from "@/src/utils/theme/theme";
-import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
-import Constants from "expo-constants";
-import { tokenCache } from "@/src/utils/clerk";
+import { useAuth } from "@/src/services/state/auth";
 
-export {
-  ErrorBoundary,
-} from "expo-router";
+export { ErrorBoundary } from "expo-router";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -23,7 +19,6 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -37,35 +32,23 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-  return (
-    <ClerkProvider
-      signInFallbackRedirectUrl={"/home"}
-      signInForceRedirectUrl={"/home"}
-      allowedRedirectOrigins={["/home", "/login"]}
-      tokenCache={tokenCache}
-      publishableKey={Constants!.expoConfig!.extra!.clerkPublishableKey}
-    >
-      <RootLayoutNav />
-    </ClerkProvider>
-  );
+  return <RootLayoutNav />;
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isSignedIn, refreshAuth } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoaded) return;
     const inTabsGroup = segments[0] === "(auth)";
-    console.log(segments);
     if (isSignedIn && !inTabsGroup) {
       router.replace("/home/");
     } else if (!isSignedIn) {
       router.replace("/login");
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, refreshAuth]);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>

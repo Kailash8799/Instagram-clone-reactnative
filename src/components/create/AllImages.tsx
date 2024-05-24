@@ -1,8 +1,8 @@
-import { View, FlatList, ActivityIndicator } from "react-native";
 import React, { useCallback, useEffect } from "react";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import ImageComp from "@/src/components/create/SelectedImage";
-import { useLocalImages } from "@/src/state/store/localimagestore";
+import { useLocalImages } from "@/src/services/state/localimagestore";
 
 const AllImages = () => {
   const {

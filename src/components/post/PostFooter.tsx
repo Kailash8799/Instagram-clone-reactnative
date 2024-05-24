@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Dimensions,
     StyleSheet,
@@ -5,7 +6,6 @@ import {
     View,
     useColorScheme,
 } from "react-native";
-import React from "react";
 import { Text } from "../Themed";
 import { AntDesign, FontAwesome, Feather } from "@expo/vector-icons";
 import { Image } from "expo-image";
