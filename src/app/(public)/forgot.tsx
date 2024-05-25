@@ -13,11 +13,13 @@ import { useAuth } from "@/src/services/state/auth";
 import { Toast } from "@/src/utils/toast";
 import { AuthService } from "@/src/services/api/authService";
 import { useRouter } from "expo-router";
+import { useThemeConstant } from "@/src/hooks/useThemeConstant";
 
 const Forgot = () => {
   const [email, setemail] = useState("");
   const { isLoading, setIsLoading } = useAuth();
   const router = useRouter();
+  const { commonTheme } = useThemeConstant();
 
   const onemailChange = (val: any) => {
     setemail(val);
@@ -26,9 +28,9 @@ const Forgot = () => {
   const resetPassword = useCallback(async () => {
     if (isLoading) return;
     try {
-        if (email.length === 0) {
-            Toast.render("All field are mandatory");
-            return;
+      if (email.length === 0) {
+        Toast.render("All field are mandatory");
+        return;
       }
       if (email.length < 4) {
         Toast.render("Email is Invalid");
@@ -41,20 +43,20 @@ const Forgot = () => {
 
       router.push({
         pathname: "/(public)/otpverification",
-        params: { otp: "",email },
+        params: { otp: "", email },
       });
 
-    //   const res = await AuthService.resetpassword(data);
-    //   if (res?.Success) {
-    //     setemail("");
-    //     Toast.render("OTP sent successfully");
-    //     router.push({
-    //       pathname: "/(public)/otpverification",
-    //       params: { otp: res.Data?.OTP },
-    //     });
-    //   } else {
-    //     Toast.render(res?.Message ?? "Some error occurred!");
-    //   }
+      //   const res = await AuthService.resetpassword(data);
+      //   if (res?.Success) {
+      //     setemail("");
+      //     Toast.render("OTP sent successfully");
+      //     router.push({
+      //       pathname: "/(public)/otpverification",
+      //       params: { otp: res.Data?.OTP },
+      //     });
+      //   } else {
+      //     Toast.render(res?.Message ?? "Some error occurred!");
+      //   }
     } catch (error) {
       ToastAndroid.showWithGravity(
         "Some error occurred. Try again",
@@ -67,18 +69,24 @@ const Forgot = () => {
   }, [email]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: commonTheme.background }]}
+    >
       <StatusBar />
       <View style={styles.statusbar} />
       <View>
-        <Text style={[styles.heading1]}>Forgot password?</Text>
-        <Text style={[styles.heading2]}>
+        <Text style={[styles.heading1, { color: commonTheme.color }]}>
+          Forgot password?
+        </Text>
+        <Text style={[styles.heading2, { color: commonTheme.secondaryColor }]}>
           Enter your email address and we'll send you confirmation code to reset
           your password.
         </Text>
       </View>
       <View>
-        <Text style={styles.label}>Email Address</Text>
+        <Text style={[styles.label, { color: commonTheme.color }]}>
+          Email Address
+        </Text>
         <Input
           isVisible={false}
           secureTextEntry={false}
@@ -111,19 +119,16 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    color: "black",
     marginTop: 30,
     marginBottom: 5,
     fontSize: 17,
     fontWeight: "600",
   },
   heading1: {
-    color: "black",
     fontSize: 35,
     fontWeight: "900",
   },
   heading2: {
-    color: "grey",
     fontSize: 18,
     marginTop: 10,
     fontWeight: "500",
@@ -134,6 +139,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
   },
 });

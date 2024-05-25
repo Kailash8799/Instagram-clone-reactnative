@@ -16,6 +16,7 @@ import CustomButton from "@/src/components/global/CustomButton";
 import { useAuth } from "@/src/services/state/auth";
 import Icon from "@expo/vector-icons/AntDesign";
 import { useRouter } from "expo-router";
+import { useThemeConstant } from "@/src/hooks/useThemeConstant";
 
 const Register = () => {
   const [email, setemail] = useState("");
@@ -25,6 +26,7 @@ const Register = () => {
   const [isSecured, setisSecured] = useState(true);
   const { isLoading, setIsLoading } = useAuth();
   const router = useRouter();
+  const {commonTheme} = useThemeConstant();
 
   const onemailChange = (val: any) => {
     setemail(val);
@@ -97,17 +99,23 @@ const Register = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: commonTheme.background }]}
+    >
       <StatusBar />
       <View style={styles.statusbar} />
       <View>
-        <Text style={[styles.heading1]}>Create your new account.</Text>
-        <Text style={[styles.heading2]}>
+        <Text style={[styles.heading1, { color: commonTheme.color }]}>
+          Create your new account.
+        </Text>
+        <Text style={[styles.heading2, { color: commonTheme.secondaryColor }]}>
           Create an account to start looking for the food you like
         </Text>
       </View>
       <View>
-        <Text style={styles.label}>Email Address</Text>
+        <Text style={[styles.label, { color: commonTheme.color }]}>
+          Email Address
+        </Text>
         <Input
           isVisible={false}
           secureTextEntry={false}
@@ -117,7 +125,9 @@ const Register = () => {
         />
       </View>
       <View>
-        <Text style={styles.label}>User Name</Text>
+        <Text style={[styles.label, { color: commonTheme.color }]}>
+          User Name
+        </Text>
         <Input
           isVisible={false}
           secureTextEntry={false}
@@ -127,7 +137,9 @@ const Register = () => {
         />
       </View>
       <View>
-        <Text style={styles.label}>Password</Text>
+        <Text style={[styles.label, { color: commonTheme.color }]}>
+          Password
+        </Text>
         <Input
           isVisible={true}
           iconvalue={isSecured}
@@ -142,8 +154,8 @@ const Register = () => {
         <View>
           <BouncyCheckbox
             size={23}
-            fillColor="black"
-            unFillColor="#FFFFFF"
+            fillColor={commonTheme.secondaryColor}
+            unFillColor={commonTheme.background}
             iconStyle={{ borderColor: "black" }}
             innerIconStyle={{ borderWidth: 2 }}
             // textStyle={{ fontFamily: "JosefinSans-Regular" }}
@@ -153,11 +165,13 @@ const Register = () => {
           />
         </View>
         <View style={[styles.tmcs]}>
-          <Text style={[styles.tmc, { color: "black" }]}>I Agree with </Text>
+          <Text style={[styles.tmc, { color: commonTheme.color }]}>
+            I Agree with{" "}
+          </Text>
           <TouchableOpacity>
             <Text style={styles.tmc}>Terms of Services </Text>
           </TouchableOpacity>
-          <Text style={[styles.tmc, { color: "black" }]}>and</Text>
+          <Text style={[styles.tmc, { color: commonTheme.color }]}>and</Text>
           <TouchableOpacity>
             <Text style={styles.tmc}> Privary Policy</Text>
           </TouchableOpacity>

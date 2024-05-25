@@ -16,12 +16,14 @@ import { LoginFormType } from "@/src/types/auth";
 import { useAuth } from "@/src/services/state/auth";
 import { useRouter } from "expo-router";
 import Icon from "@expo/vector-icons/AntDesign";
+import { useThemeConstant } from "@/src/hooks/useThemeConstant";
 
 const Login = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [isSecured, setisSecured] = useState(true);
   const { isLoading, setIsLoading, setIsSignIn } = useAuth();
+  const { commonTheme } = useThemeConstant();
   const router = useRouter();
 
   const onemailChange = (val: any) => {
@@ -87,15 +89,23 @@ const Login = () => {
   }, [isSecured]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: commonTheme.background }]}
+    >
       <StatusBar />
       <View style={styles.statusbar} />
       <View>
-        <Text style={[styles.heading1]}>Login to your account.</Text>
-        <Text style={[styles.heading2]}>Please sign in to your account</Text>
+        <Text style={[styles.heading1, { color: commonTheme.color }]}>
+          Login to your account.
+        </Text>
+        <Text style={[styles.heading2, { color: commonTheme.secondaryColor }]}>
+          Please sign in to your account
+        </Text>
       </View>
       <View>
-        <Text style={styles.label}>Email Address</Text>
+        <Text style={[styles.label, { color: commonTheme.color }]}>
+          Email Address
+        </Text>
         <Input
           isVisible={false}
           secureTextEntry={false}
@@ -105,7 +115,9 @@ const Login = () => {
         />
       </View>
       <View>
-        <Text style={styles.label}>Password</Text>
+        <Text style={[styles.label, { color: commonTheme.color }]}>
+          Password
+        </Text>
         <Input
           isVisible={true}
           secureTextEntry={isSecured}
@@ -118,7 +130,9 @@ const Login = () => {
       </View>
       <View style={styles.forgotview}>
         <TouchableOpacity onPress={pushToForgot}>
-          <Text style={styles.forgot}>Forgot Password ?</Text>
+          <Text style={[styles.forgot, { color: commonTheme.color }]}>
+            Forgot Password ?
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.spacer} />
@@ -150,7 +164,9 @@ const Login = () => {
       <View style={styles.account}>
         <Text style={styles.heading3}>Don't have an account?</Text>
         <TouchableOpacity onPress={pushToRegister}>
-          <Text style={styles.forgot}>Register</Text>
+          <Text style={[styles.forgot, { color: commonTheme.color }]}>
+            Register
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -172,7 +188,7 @@ const styles = StyleSheet.create({
   circle: {
     height: 50,
     width: 50,
-    borderColor: "rgba(88,88,88,0.1)",
+    borderColor: "rgba(88,88,88,0.5)",
     borderWidth: 2,
     borderRadius: 100,
     display: "flex",
@@ -222,19 +238,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   forgot: {
-    color: "rgba(255,159,11,1)",
     fontSize: 15,
     fontWeight: "600",
   },
   label: {
-    color: "black",
     marginTop: 30,
     marginBottom: 5,
     fontSize: 17,
     fontWeight: "600",
   },
   heading1: {
-    color: "black",
     fontSize: 35,
     fontWeight: "900",
   },
@@ -250,6 +263,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
   },
 });

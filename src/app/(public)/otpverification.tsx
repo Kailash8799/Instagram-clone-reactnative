@@ -16,6 +16,7 @@ import CustomButton from "@/src/components/global/CustomButton";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Toast } from "@/src/utils/toast";
 import { useAuth } from "@/src/services/state/auth";
+import { useThemeConstant } from "@/src/hooks/useThemeConstant";
 
 const { width } = Dimensions.get("screen");
 
@@ -36,6 +37,9 @@ const OTPVerification = () => {
   const [resendOTP, setresendOTP] = useState<string | null>(null);
   const [timer, settimer] = useState(0);
   const [timerison, settimeison] = useState(false);
+
+  const { commonTheme } = useThemeConstant();
+
   const goBack = () => {
     router.back();
   };
@@ -117,23 +121,29 @@ const OTPVerification = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.header}>
+      <View style={[styles.header]}>
         <TouchableOpacity
           activeOpacity={0.6}
           onPress={goBack}
           style={styles.backarrow}
         >
           <View>
-            <Icon name="chevron-back" color={"#000"} size={30} />
+            <Icon name="chevron-back" color={commonTheme.icon} size={30} />
           </View>
         </TouchableOpacity>
-        <Text style={styles.headertitle}>OTP</Text>
+        <Text style={[styles.headertitle, { color: commonTheme.color }]}>
+          OTP
+        </Text>
       </View>
       <ScrollView style={styles.container}>
         <View style={styles.statusbar} />
         <View>
-          <Text style={[styles.heading1]}>Email Verification</Text>
-          <Text style={[styles.heading2]}>
+          <Text style={[styles.heading1, { color: commonTheme.color }]}>
+            Email Verification
+          </Text>
+          <Text
+            style={[styles.heading2, { color: commonTheme.secondaryColor }]}
+          >
             Enter the verification code we send you on: {email}
           </Text>
         </View>
@@ -144,7 +154,7 @@ const OTPVerification = () => {
             value={f1}
             inputMode="numeric"
             keyboardType="number-pad"
-            style={[styles.textinput]}
+            style={[styles.textinput, { color: commonTheme.color }]}
             maxLength={1}
             onChangeText={(txt) => {
               setf1(txt);
@@ -160,7 +170,7 @@ const OTPVerification = () => {
             value={f2}
             inputMode="numeric"
             keyboardType="number-pad"
-            style={[styles.textinput]}
+            style={[styles.textinput, { color: commonTheme.color }]}
             maxLength={1}
             onChangeText={(txt) => {
               setf2(txt);
@@ -176,7 +186,7 @@ const OTPVerification = () => {
             value={f3}
             inputMode="numeric"
             keyboardType="number-pad"
-            style={[styles.textinput]}
+            style={[styles.textinput, { color: commonTheme.color }]}
             maxLength={1}
             onChangeText={(txt) => {
               setf3(txt);
@@ -192,7 +202,7 @@ const OTPVerification = () => {
             value={f4}
             inputMode="numeric"
             keyboardType="number-pad"
-            style={[styles.textinput]}
+            style={[styles.textinput, { color: commonTheme.color }]}
             maxLength={1}
             onChangeText={(txt) => {
               setf4(txt);
@@ -297,7 +307,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
   },
   backarrow: {
     zIndex: 100,
@@ -312,7 +321,6 @@ const styles = StyleSheet.create({
   },
   headertitle: {
     zIndex: 10,
-    color: "#000",
     fontSize: 25,
     fontWeight: "600",
     flex: 1,
@@ -336,7 +344,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   labelbelow: {
-    color: "grey",
     marginLeft: 4,
     fontWeight: "500",
   },
@@ -345,19 +352,16 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    color: "black",
     marginTop: 30,
     marginBottom: 5,
     fontSize: 17,
     fontWeight: "600",
   },
   heading1: {
-    color: "black",
     fontSize: 35,
     fontWeight: "900",
   },
   heading2: {
-    color: "grey",
     fontSize: 18,
     marginTop: 10,
     fontWeight: "500",
@@ -368,14 +372,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
   },
   contentContainer: {
     flex: 1,
     width: width,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
   },
 });
