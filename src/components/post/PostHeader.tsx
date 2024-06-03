@@ -1,17 +1,27 @@
-import React from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, useColorScheme } from 'react-native'
-import { Image } from 'expo-image';
-import { Feather } from '@expo/vector-icons';
+import React from "react";
+import {
+    Dimensions,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    useColorScheme,
+} from "react-native";
+import { Image } from "expo-image";
+import { Feather } from "@expo/vector-icons";
 const { width } = Dimensions.get("screen");
 import { blurhash, constimage } from "@/src/constants/constant";
-
+import { useBottomSheet } from "@/src/services/providers/BottomSheetProvider";
 
 const PostHeader = () => {
     const colorSheme = useColorScheme();
-    const color = colorSheme === "dark" ? "#fff" : "#000"
+    const color = colorSheme === "dark" ? "#fff" : "#000";
+
+    const { showBottomSheet } = useBottomSheet();
+
     return (
-        <View style={styles.container} >
-            <TouchableOpacity activeOpacity={0.8} style={styles.header} >
+        <View style={styles.container}>
+            <TouchableOpacity activeOpacity={0.8} style={styles.header}>
                 <View>
                     <Image
                         style={styles.image}
@@ -23,38 +33,42 @@ const PostHeader = () => {
                 </View>
                 <View style={styles.spacer} />
                 <View>
-                    <Text style={[styles.text, { color }]} >kailash8799</Text>
+                    <Text style={[styles.text, { color }]}>kailash8799</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} >
-                <Feather name="more-vertical" size={24} color={colorSheme === "dark" ? "#fff" : "#000"} />
+            <TouchableOpacity onPress={showBottomSheet} activeOpacity={0.7}>
+                <Feather
+                    name="more-vertical"
+                    size={24}
+                    color={colorSheme === "dark" ? "#fff" : "#000"}
+                />
             </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 
-export default PostHeader
+export default PostHeader;
 
 const styles = StyleSheet.create({
     container: {
         height: 45,
         width,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingHorizontal: 10,
     },
     header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
     },
     image: {
         height: 40,
         width: 40,
-        backgroundColor: '#0553',
+        backgroundColor: "#0553",
         borderRadius: 50,
     },
     spacer: {
@@ -62,5 +76,5 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 15,
-    }
-})
+    },
+});

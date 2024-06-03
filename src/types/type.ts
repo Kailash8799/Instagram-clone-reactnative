@@ -1,7 +1,7 @@
 export type CustomButtonType = {
     title: string;
     color?: string;
-    loading?: boolean,
+    loading?: boolean;
     borderRadius?: number;
     onClick: () => void;
 };
@@ -11,4 +11,4 @@ export type ApiResponse = {
     Message: string;
     Success: boolean;
     Data: any;
-}
+};

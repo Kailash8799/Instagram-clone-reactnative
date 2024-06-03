@@ -1,5 +1,5 @@
-import { create } from 'zustand'
-import * as MediaLibrary from 'expo-media-library';
+import { create } from "zustand";
+import * as MediaLibrary from "expo-media-library";
 
 export interface LocalImages {
     allimages: MediaLibrary.Asset[];
@@ -17,17 +17,20 @@ export const useLocalImages = create<LocalImages>((set) => ({
     loading: false,
     endCursor: "0",
     hasNext: true,
-    setallimages: (images) => set((state) => {
-        return ({ allimages: [...state.allimages, ...images] });
-    }),
-    setloading: (loading) => set(() => {
-        return ({ loading: loading });
-    }),
-    setendCursor: (cursor) => set(() => {
-        return ({ endCursor: cursor });
-    }),
-    sethasNext: (hasNext) => set(() => {
-        return ({ hasNext: hasNext });
-    }),
-
-}))
+    setallimages: (images) =>
+        set((state) => {
+            return { allimages: [...state.allimages, ...images] };
+        }),
+    setloading: (loading) =>
+        set(() => {
+            return { loading: loading };
+        }),
+    setendCursor: (cursor) =>
+        set(() => {
+            return { endCursor: cursor };
+        }),
+    sethasNext: (hasNext) =>
+        set(() => {
+            return { hasNext: hasNext };
+        }),
+}));

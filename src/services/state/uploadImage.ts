@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 export interface UploadImage {
     image: string | null;
@@ -7,7 +7,8 @@ export interface UploadImage {
 
 export const useUploadImageStore = create<UploadImage>((set) => ({
     image: null,
-    addUploadImage: (image) => set((state) => {
-        return ({ image: image });
-    })
-}))
+    addUploadImage: (image) =>
+        set((state) => {
+            return { image: image };
+        }),
+}));

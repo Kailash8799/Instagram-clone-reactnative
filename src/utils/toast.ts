@@ -7,7 +7,7 @@ class Toast {
             ToastAndroid.SHORT,
             ToastAndroid.CENTER
         );
-    }
+    };
 }
 
-export { Toast }
+export { Toast };

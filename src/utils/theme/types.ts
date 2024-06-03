@@ -14,5 +14,5 @@ export type Theme = {
 
 export type UploadImageType = {
     item: MediaLibrary.Asset;
-    index: number
-}
+    index: number;
+};

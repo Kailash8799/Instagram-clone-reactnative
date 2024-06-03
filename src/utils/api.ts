@@ -13,13 +13,12 @@ const api = axios.create({
 api.interceptors.request.use(
     async (config) => {
         try {
-            const token = tokenCache.getToken("token");
+            const token = await tokenCache.getToken("token");
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
             return config;
         } catch (error) {
-            console.error("Error fetching token:", error);
             return Promise.reject(error);
         }
     },
